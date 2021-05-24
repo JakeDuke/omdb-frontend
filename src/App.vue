@@ -1,7 +1,14 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <SearchInput />
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="search-wrap">
+            <SearchInput />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,5 +31,12 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.search-wrap {
+  width: 100%;
+  display: flex;
+  border: 1px solid grey;
+  padding: 50px 20px;
 }
 </style>
