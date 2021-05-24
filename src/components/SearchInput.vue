@@ -15,6 +15,7 @@
         <b-form-input
           v-model="year"
           placeholder="Year"
+          debounce="1000"
           id="year"
         ></b-form-input>
       </div>
@@ -30,14 +31,20 @@
       </div>
     </div>
     <div class="results">
-      <b-table stacked :items="results">
-        <template #cell(poster)="data">
-          <img :src="data.item.Poster" alt="img" />
-        </template>
-        <template #cell(ratings)="data">
-          <b-table stacked :items="data.item.Ratings"> </b-table>
-        </template>
-      </b-table>
+      <div v-if="loading" class="text-center">
+        <b-spinner variant="dark" label="Text Centered"></b-spinner>
+      </div>
+      <div v-else>
+        <p v-if="error">{{ error }}</p>
+        <b-table v-else stacked :items="resultsFiltered">
+          <template #cell(poster)="data">
+            <img :src="data.item.Poster" alt="Poster" />
+          </template>
+          <template #cell(ratings)="data">
+            <b-table stacked borderless :items="data.item.Ratings"> </b-table>
+          </template>
+        </b-table>
+      </div>
     </div>
   </div>
 </template>
@@ -54,6 +61,7 @@ export default {
       baseUrl: "http://www.omdbapi.com/?i=tt3896198&apikey=f68f2cab",
       loading: null,
       results: [],
+      error: "",
     };
   },
   computed: {
@@ -65,21 +73,39 @@ export default {
         `${this.type && `&type=${this.type}`}`
       );
     },
+    resultsFiltered() {
+      if (this.results.length) {
+        delete this.results[0].Response;
+        return this.results;
+      }
+      return [];
+    },
   },
   methods: {
     async getMovie() {
       this.results = [];
+      this.error = "";
       try {
+        this.loading = true;
         const { data } = await this.axios.get(this.url);
+        if (data.Error) this.error = data.Error;
         this.results.push(data);
       } catch (e) {
-        console.log(e);
+        this.error = "Error occured, try later";
+      } finally {
+        this.loading = false;
       }
     },
   },
   watch: {
     movieName(newValue) {
       if (newValue) this.getMovie();
+    },
+    year() {
+      if (this.movieName) this.getMovie();
+    },
+    type() {
+      if (this.movieName) this.getMovie();
     },
   },
 };
@@ -92,6 +118,8 @@ export default {
 }
 .inputs {
   display: flex;
+  padding: 50px 20px;
+  margin-top: 16px;
 }
 
 .input-wrap {
@@ -104,10 +132,5 @@ export default {
     margin-right: 0.5rem;
     margin-bottom: 0;
   }
-}
-
-.results {
-  width: 100%;
-  overflow: auto;
 }
 </style>
