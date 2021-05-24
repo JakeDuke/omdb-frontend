@@ -17,6 +17,7 @@
           placeholder="Year"
           debounce="1000"
           id="year"
+          type="number"
         ></b-form-input>
       </div>
       <div class="input-wrap">
@@ -118,7 +119,7 @@ export default {
 }
 .inputs {
   display: flex;
-  padding: 50px 20px;
+  padding: 30px 20px;
   margin-top: 16px;
 }
 

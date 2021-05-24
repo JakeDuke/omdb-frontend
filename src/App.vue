@@ -36,7 +36,8 @@ export default {
 .search-wrap {
   width: 100%;
   display: flex;
-  border: 1px solid grey;
-  padding: 50px 20px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 20px;
 }
 </style>
