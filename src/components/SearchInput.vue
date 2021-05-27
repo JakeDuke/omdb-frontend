@@ -59,7 +59,7 @@ export default {
       year: "",
       type: "",
       typeOptions: ["movie", "series", "episode"],
-      baseUrl: "http://www.omdbapi.com/?i=tt3896198&apikey=f68f2cab",
+      baseUrl: "http://www.omdbapi.com/?i=tt3896198&apikey=f68f2cab", // left key here on purpose
       loading: null,
       results: [],
       error: "",
